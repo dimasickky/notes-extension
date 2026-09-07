@@ -673,19 +673,33 @@ async def _bulk_action(ctx, params, *, action: str, ok_verb: str, scope_filter: 
     summary = f"{affected} note(s) {ok_verb}"
     if not_found:
         summary += f" ({len(not_found)} not found: {', '.join(not_found)})"
+    affected_ids = resp.get("note_ids", ids) if isinstance(resp, dict) else ids
+    data_dict = {
+        "affected_count": affected,
+        "action": action,
+        "note_ids": affected_ids,
+        "not_found": not_found,
+        "refresh_panels": ["sidebar"],
+    }
+    undo = None
+    if action == "trash" and affected_ids:
+        undo = {
+            "action": "call",
+            "function": "restore_notes",
+            "params": {"note_ids": affected_ids},
+            "description": f"Restore {len(affected_ids)} note(s) from trash",
+        }
+    elif action == "archive" and affected_ids:
+        undo = {
+            "action": "call",
+            "function": "unarchive_notes",
+            "params": {"note_ids": affected_ids},
+            "description": f"Unarchive {len(affected_ids)} note(s)",
+        }
     return ActionResult.success(
-        data={
-            "affected_count": affected,
-            "action": action,
-            "note_ids": (resp.get("note_ids", ids) if isinstance(resp, dict) else ids),
-            "not_found": not_found,
-            # Bare panel id — the host resolves it against its own left/right/
-            # center panel_ids. A "__panel__"-prefixed value is NOT a panel id:
-            # it gets prefixed a second time, resolves to no known panel, and
-            # the batch silently never refreshes the sidebar.
-            "refresh_panels": ["sidebar"],
-        },
+        data=data_dict,
         summary=summary,
+        undo=undo,
     )
 
 

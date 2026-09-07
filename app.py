@@ -223,7 +223,7 @@ async def _resolve_folder_names(ctx, names: list) -> tuple[list, list]:
 
 ext = Extension(
     "notes",
-    version="3.21.0",
+    version="3.22.0",
     capabilities=["notes:read", "notes:write"],
     display_name="Notes",
     description=(

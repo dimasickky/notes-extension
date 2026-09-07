@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.22.0] — 2026-09-07
+
+### Added
+
+- **Batch Undo Support (`delete_notes`, `archive_notes`)** — bulk note operations now emit an `undo` descriptor pointing to `restore_notes` / `unarchive_notes`, enabling one-click bulk restoration via Time-Travel.
+- **Automated Test Suite** — added `tests/test_notes_bulk_undo.py` verifying bulk delete, bulk archive, and single delete undo flows.
+
 ## [3.21.0] — 2026-09-07
 
 ### Added

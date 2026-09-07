@@ -2,7 +2,7 @@
   "manifest_schema_version": 3,
   "sdk_version": "5.15.1",
   "app_id": "notes",
-  "version": "3.21.0",
+  "version": "3.22.0",
   "name": "Notes",
   "description": "Personal notes with folders, tags, full-text search, and trash management for your workspace.",
   "icon": "icon.svg",
