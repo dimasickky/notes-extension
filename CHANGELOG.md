@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.21.0] — 2026-09-07
+
+### Added
+
+- **Semantic Omnisearch (`@ext.search_provider`)** — registered `notes` provider for Cmd+K search by title, tags, and content.
+- **Stale-While-Revalidate Caching** — added `stale_while_revalidate=True, cache_ttl=60` to sidebar panel for instant UI render.
+- **Action Ledger & Time-Travel (`ActionResult.success(undo=...)`)** — `delete_note` now returns an `undo` descriptor pointing to `restore_note`.
+
+### Changed
+
+- **imperal-sdk 5.13.1 → 5.15.1** — upgraded dependency pin and manifest contract.
+
 ## [3.20.2] — 2026-08-31
 
 ### Changed

@@ -436,7 +436,12 @@ async def fn_delete_note(ctx, params: NoteIdParams) -> ActionResult:
             return ActionResult.error(err, code=NOTES_INVALID_NOTE_ID)
         await _api_delete(ctx, f"/notes/{params.note_id}",
                           {"user_id": require_user_id(ctx), "permanent": "false"})
-        return ActionResult.success(data={"note_id": params.note_id}, summary="Note moved to trash")
+        undo_action = {"action": "call", "function": "restore_note", "params": {"note_id": params.note_id}}
+        return ActionResult.success(
+            data={"note_id": params.note_id},
+            summary="Note moved to trash",
+            undo=undo_action,
+        )
     except NotesAPIError as e:
         return ActionResult.error(f"delete_note backend returned {e.status_code}: {e.detail}", code=NOTES_BACKEND_ERROR)
     except Exception as e:

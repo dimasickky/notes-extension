@@ -223,7 +223,7 @@ async def _resolve_folder_names(ctx, names: list) -> tuple[list, list]:
 
 ext = Extension(
     "notes",
-    version="3.20.2",
+    version="3.21.0",
     capabilities=["notes:read", "notes:write"],
     display_name="Notes",
     description=(
@@ -233,6 +233,45 @@ ext = Extension(
     icon="icon.svg",
     actions_explicit=True,
 )
+
+
+# ─── Semantic Omnisearch Provider (SDK 5.15+) ─────────────────────────────── #
+
+from imperal_sdk.search import SearchEntityResult
+
+
+@ext.search_provider("notes", description="Search personal notes by title, tags, or content")
+async def search_provider_notes(ctx, query: str) -> list[SearchEntityResult]:
+    """Provide search results for global Cmd+K omnisearch."""
+    uid, tid = _user_id(ctx), _tenant_id(ctx)
+    if not query or not query.strip():
+        return []
+    try:
+        data = await _api_get(ctx, "/notes/search", {
+            "user_id": uid,
+            "tenant_id": tid,
+            "query": query.strip(),
+            "limit": 10,
+        }) or {}
+        notes = data.get("notes", [])
+        results = []
+        for n in notes:
+            nid = n.get("id", "")
+            title = n.get("title", "Untitled")
+            body = n.get("content_text", "")
+            snippet = body[:120] if body else ""
+            results.append(SearchEntityResult(
+                id=nid,
+                title=title,
+                type="note",
+                snippet=snippet,
+                url=f"/workspace/notes?note_id={nid}",
+                metadata={"tags": n.get("tags", []), "folder_id": n.get("folder_id")},
+            ))
+        return results
+    except Exception as exc:
+        log.warning("search_provider_notes failed: %s", exc)
+        return []
 
 
 # ─── Cache models (SDK 4.0 ctx.cache, Pydantic-typed, per-user TTL) ───────── #

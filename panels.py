@@ -16,6 +16,7 @@ log = logging.getLogger("notes")
 @ext.panel(
     "sidebar", slot="left", title="Notes", icon="StickyNote",
     default_width=280, min_width=200, max_width=500,
+    stale_while_revalidate=True, cache_ttl=60,
     # Two naming schemes have to be listed, not one.
     #
     # The kernel publishes a domain event under the name the *caller* supplied:

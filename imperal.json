@@ -1,8 +1,8 @@
 {
   "manifest_schema_version": 3,
-  "sdk_version": "5.13.1",
+  "sdk_version": "5.15.1",
   "app_id": "notes",
-  "version": "3.20.2",
+  "version": "3.21.0",
   "name": "Notes",
   "description": "Personal notes with folders, tags, full-text search, and trash management for your workspace.",
   "icon": "icon.svg",
@@ -3791,6 +3791,13 @@
       "scope": "app"
     }
   ],
+  "search_providers": [
+    {
+      "entity_type": "notes",
+      "handler": "search_provider_notes",
+      "description": "Search personal notes by title, tags, or content"
+    }
+  ],
   "panels": [
     {
       "panel_id": "secrets",
@@ -3799,7 +3806,9 @@
       "tree": {},
       "icon": "KeyRound",
       "refresh": "manual",
-      "center_overlay": false
+      "center_overlay": false,
+      "stale_while_revalidate": true,
+      "cache_ttl": 60
     },
     {
       "panel_id": "sidebar",
@@ -3809,6 +3818,8 @@
       "icon": "StickyNote",
       "refresh": "on_event:notes.created,notes.updated,notes.deleted,notes.moved,notes.restored,notes.permanently_deleted,notes.emptied,notes.bulk_deleted,notes.bulk_archived,notes.bulk_unarchived,notes.bulk_restored,notes.bulk_moved,notes.folder_created,notes.folder_renamed,notes.folder_deleted,notes.folder_with_contents_deleted,notes.folders_bulk_deleted,notes.create_note,notes.update_note,notes.append_to_note,notes.note_save,notes.duplicate_note,notes.move_note,notes.move_notes,notes.delete_note,notes.delete_notes,notes.delete_notes_from_folder,notes.permanent_delete_note,notes.archive_notes,notes.unarchive_notes,notes.restore_note,notes.restore_notes,notes.empty_trash,notes.create_folder,notes.rename_folder,notes.delete_folder,notes.delete_folder_with_contents,notes.delete_folders",
       "center_overlay": false,
+      "stale_while_revalidate": true,
+      "cache_ttl": 60,
       "default_width": 280,
       "min_width": 200,
       "max_width": 500
@@ -3820,7 +3831,9 @@
       "tree": {},
       "icon": "Edit",
       "refresh": "manual",
-      "center_overlay": false
+      "center_overlay": false,
+      "stale_while_revalidate": true,
+      "cache_ttl": 60
     }
   ]
 }
