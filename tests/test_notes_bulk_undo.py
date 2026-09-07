@@ -14,7 +14,7 @@ async def test_bulk_delete_notes_with_undo():
     note_id = "3f2504e0-4f89-11d3-9a0c-0305e82c3301"
 
     ctx.http.mock_post(
-        "http://localhost:8000/notes/bulk-action",
+        "/notes/bulk-action",
         {"affected_count": 1, "note_ids": [note_id]},
     )
 
@@ -34,7 +34,7 @@ async def test_bulk_archive_notes_with_undo():
     note_id = "3f2504e0-4f89-11d3-9a0c-0305e82c3301"
 
     ctx.http.mock_post(
-        "http://localhost:8000/notes/bulk-action",
+        "/notes/bulk-action",
         {"affected_count": 1, "note_ids": [note_id]},
     )
 
